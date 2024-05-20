@@ -71,4 +71,23 @@ const style = computed(() => ({
 .moldure img {
   width: 100%;
 }
+
+@media (max-width: 1200px) {
+  .moldure {
+    max-width: 90%;
+    border: solid 2px white;
+  }
+  .close-model {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: solid 2px black;
+    right: -10px;
+    top: -30px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+  }
+}
 </style>
