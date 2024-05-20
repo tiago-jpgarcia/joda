@@ -4,8 +4,7 @@ import TextComponent from './components/Atom/TextComponent.vue'
 import WrapContainer from './components/Organisms/WrapContainer.vue'
 import InputComponent from './components/Atom/InputComponent.vue'
 import ImageComponent from './components/Atom/ImageComponent.vue'
-import Colors from './stories/color.json'
-import { ref, computed } from 'vue' // Import ref and computed from Vue
+import { ref } from 'vue' // Import ref and computed from Vue
 import imagePath from './assets/joda_image.png'
 import image1 from './assets/foto1.jpg'
 import image2 from './assets/foto2.jpg'
@@ -16,7 +15,8 @@ import image6 from './assets/foto6.jpg'
 import image7 from './assets/foto7.jpg'
 import image8 from './assets/foto8.jpg'
 import image9 from './assets/foto9.jpg'
-import image10 from './assets/foto10.jpg'
+import facebook from './assets/facebook.png'
+import email from './assets/email.png'
 import Model from './components/Organisms/Model.vue'
 
 const modelVisible = ref(false)
@@ -41,7 +41,11 @@ const closeModel = () => {
   </ContainerComponent>
   <ContainerComponent backgroundColor="#E5212A">
     <template v-slot:container>
-      <TextComponent :size="1.5" color="#FFF" text="Recebe informação sobre futuros eventos." />
+      <TextComponent
+        :size="1.5"
+        color="#FFF"
+        text="Gostariamos de entrar em contacto para que não percas nada."
+      />
       <InputComponent
         class="input"
         :button="true"
@@ -53,10 +57,10 @@ const closeModel = () => {
   </ContainerComponent>
   <ContainerComponent>
     <template v-slot:container>
-      <TextComponent :size="1.5" text="Descobre um pouco da nossa história em fotos" />
+      <TextComponent :size="1.5" text="Vê aqui a nossa história em fotos!" />
     </template>
   </ContainerComponent>
-  <WrapContainer :wrap="true">
+  <WrapContainer :centerContent="false" :wrap="true">
     <template v-slot:left>
       <ImageComponent @imageClicked="clickImage" :hasModel="true" :source="image1" />
     </template>
@@ -67,7 +71,7 @@ const closeModel = () => {
       <ImageComponent @imageClicked="clickImage" :hasModel="true" :source="image9" />
     </template>
   </WrapContainer>
-  <WrapContainer :wrap="true">
+  <WrapContainer :centerContent="false" :wrap="true">
     <template v-slot:left>
       <ImageComponent @imageClicked="clickImage" :source="image4" />
     </template>
@@ -78,7 +82,7 @@ const closeModel = () => {
       <ImageComponent @imageClicked="clickImage" :source="image8" />
     </template>
   </WrapContainer>
-  <WrapContainer :wrap="true">
+  <WrapContainer :centerContent="false" :wrap="true">
     <template v-slot:left>
       <ImageComponent @imageClicked="clickImage" :source="image3" />
     </template>
@@ -87,6 +91,17 @@ const closeModel = () => {
     </template>
     <template v-slot:right>
       <ImageComponent @imageClicked="clickImage" :source="image7" />
+    </template>
+  </WrapContainer>
+  <WrapContainer :wrap="true">
+    <template v-slot:left>
+      <ImageComponent link="https://facebook.com/jodaabrigada/" :source="facebook" />
+    </template>
+    <template v-slot:middle>
+      <ImageComponent link="mailto:abrigadajoda@gmail.com" :source="email" />
+    </template>
+    <template v-slot:right>
+      <TextComponent :size="1.6" text="Copyright © 2024" />
     </template>
   </WrapContainer>
   <Model @closeModel="closeModel" :source="selectedSource" :visibility="modelVisible" />

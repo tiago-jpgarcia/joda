@@ -64,7 +64,8 @@ export default {
       style: computed(() => ({
         flexDirection: props.column ? 'column' : 'row',
         flexWrap: props.wrap ? 'wrap' : 'nowrap',
-        textAlign: props.centerContent ? 'center' : 'left'
+        textAlign: props.centerContent ? 'center' : 'left',
+        alignItems: props.centerContent ? 'center' : 'stretch'
       })),
       leftStyle: computed(() => ({
         flex: props.fullWidth ? '1 0 auto' : '',

@@ -4,7 +4,8 @@
       <h1><img :src="source" /></h1>
     </div>
     <div v-else class="image">
-      <img @click="onClick" :src="source" />
+      <a v-if="link" :href="link" target="_blank"> <img :src="source" /></a>
+      <img v-else @click="onClick" :src="source" />
     </div>
   </div>
 </template>
@@ -24,6 +25,10 @@ const props = defineProps({
   center: {
     type: Boolean,
     default: true
+  },
+  link: {
+    type: String,
+    default: ''
   }
 })
 
