@@ -67,7 +67,7 @@ const style = computed(() => {
   .image {
     text-align: center;
   }
-  .image img {
+  .image > :not(a) img {
     width: 100%;
     max-height: 300px;
   }
