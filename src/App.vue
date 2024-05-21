@@ -52,6 +52,7 @@ const closeModel = () => {
         text="Fica a par das novidades"
         color="#FFF"
         placeholder="Adiciona o teu email"
+        privacy="Autorizo o tratamento do meu email para receber eventos, informação relacionada com o JODA."
       />
     </template>
   </ContainerComponent>
