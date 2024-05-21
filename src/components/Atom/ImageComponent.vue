@@ -62,4 +62,14 @@ const style = computed(() => {
   cursor: pointer;
   height: 100%;
 }
+
+@media (max-width: 720px) {
+  .image {
+    text-align: center;
+  }
+  .image img {
+    width: 100%;
+    max-height: 300px;
+  }
+}
 </style>
