@@ -23,13 +23,22 @@
       </label>
       <TextComponent :textAlign="false" color="#FFF" :size="0.9" :text="privacy" />
     </div>
-    <div v-if="erro" class="errorMessage">
+    <div v-if="erro">
       <TextComponent
         class="erro"
         :textAlign="true"
         color="#856404"
         :size="1.3"
         text="Erro ao verificar o email ou a autorização de dados. Tenta novamente."
+      />
+    </div>
+    <div v-if="sub">
+      <TextComponent
+        class="subMessage"
+        :textAlign="true"
+        color="#856404"
+        :size="1.3"
+        text="Obrigado, seu email foi guardado com sucesso."
       />
     </div>
   </div>
@@ -83,6 +92,7 @@ export default {
     const email = ref('')
     const check = ref(false)
     const erro = ref(false)
+    const sub = ref(false)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
     const style = computed(() => ({
@@ -101,20 +111,42 @@ export default {
         addEmail(email.value)
       } else {
         erro.value = true
+        sub.value = false
       }
     }
 
-    const addEmail = (email) => {
-      console.log('tiago' + email)
+    const addEmail = async (email) => {
+      try {
+        const response = await fetch('https://joda.herokuapp.com/subscribe', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email: email })
+        })
+        if (response.ok) {
+          email = ''
+          erro.value = false
+          sub.value = true
+        } else {
+          erro.value = true
+          sub.value = false
+        }
+      } catch (error) {
+        erro.value = true
+        sub.value = false
+      }
     }
 
     return {
       email,
       check,
       erro,
+      sub,
       style,
       input,
-      onButtonClick
+      onButtonClick,
+      addEmail
     }
   }
 }
@@ -245,6 +277,16 @@ input:checked + .slider:before {
   background-color: #fff3cd; /* Soft yellow background */
   padding: 0.5rem;
   border: 1px solid #ffeeba; /* Light yellow border */
+  border-radius: 5px;
+  text-align: center;
+  max-width: 400px;
+  margin: 1rem auto;
+}
+
+.subMessage {
+  background-color: #22b800; /* Soft yellow background */
+  padding: 0.5rem;
+  border: 1px solid #22b800; /* Light yellow border */
   border-radius: 5px;
   text-align: center;
   max-width: 400px;
