@@ -44,7 +44,7 @@ const closeModel = () => {
       <TextComponent
         :size="1.5"
         color="#FFF"
-        text="Gostariamos de entrar em contacto para que não percas nada."
+        text="Não perca nenhuma novidade! Inscreva-se para ficar por dentro de tudo."
       />
       <InputComponent
         class="input"
