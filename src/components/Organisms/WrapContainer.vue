@@ -41,7 +41,6 @@ export default {
     const reactiveWidth = ref(width)
 
     const isMobile = computed(() => {
-      console.log('aqui', reactiveWidth.value <= 1200)
       return reactiveWidth.value <= 1200
     })
 

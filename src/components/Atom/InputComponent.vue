@@ -1,39 +1,42 @@
 <template>
-  <div :style="style" class="input-container">
-    <label v-if="text" class="input-label">{{ text }}</label>
-    <input :style="input" :placeholder="placeholder" :value="value" />
-    <ButtonComponent
-      @handleClick="onButtonClick"
-      backgroundColor="#FFF"
-      color="#D01465"
-      borderColor="#FFF"
-      :paddingV="0"
-      :paddingH="1"
-      :withouthMargin="true"
-      class="input-button"
-      v-if="button"
-      :text="inputText"
-    />
-  </div>
-  <div class="privacy">
-    <label class="switch">
-      <input type="checkbox" />
-      <span class="slider round"></span>
-    </label>
-    <TextComponent :textAlign="false" color="#FFF" :size="0.9" :text="privacy" />
-  </div>
-  <div v-if="erro" class="errorMessage">
-    <TextComponent
-      :textAlign="true"
-      color="#FFF"
-      :size="1.5"
-      text="Erro ao verificar o email, introduz o email e autoriza o tratamento de dados."
-    />
+  <div>
+    <div :style="style" class="input-container">
+      <label v-if="text" class="input-label">{{ text }}</label>
+      <input :style="input" :placeholder="placeholder" v-model="email" />
+      <ButtonComponent
+        @handleClick="onButtonClick"
+        backgroundColor="#FFF"
+        color="#D01465"
+        borderColor="#FFF"
+        :paddingV="0"
+        :paddingH="1"
+        :withouthMargin="true"
+        class="input-button"
+        v-if="button"
+        :text="inputText"
+      />
+    </div>
+    <div class="privacy">
+      <label class="switch">
+        <input v-model="check" type="checkbox" />
+        <span class="slider round"></span>
+      </label>
+      <TextComponent :textAlign="false" color="#FFF" :size="0.9" :text="privacy" />
+    </div>
+    <div v-if="erro" class="errorMessage">
+      <TextComponent
+        class="erro"
+        :textAlign="true"
+        color="#856404"
+        :size="1.3"
+        text="Erro ao verificar o email ou a autorização de dados. Tenta novamente."
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import { reactive, computed } from 'vue'
+import { ref, computed } from 'vue'
 import ButtonComponent from './ButtonComponent.vue'
 import TextComponent from './TextComponent.vue'
 
@@ -50,10 +53,6 @@ export default {
     inputText: {
       type: String,
       default: 'SUBSCREVE'
-    },
-    value: {
-      type: String,
-      default: ''
     },
     button: {
       type: Boolean,
@@ -81,24 +80,41 @@ export default {
     }
   },
   setup(props) {
-    props = reactive(props)
-    return {
-      style: computed(() => ({
-        backgroundColor: props.backgroundColor
-      })),
-      input: computed(() => ({
-        border: `1px solid ${props.borderColor}`,
-        paddingRight: props.button ? `150px` : '',
-        color: props.color
-      })),
-      erro: computed(() => {
-        return false
-      })
+    const email = ref('')
+    const check = ref(false)
+    const erro = ref(false)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+    const style = computed(() => ({
+      backgroundColor: props.backgroundColor
+    }))
+
+    const input = computed(() => ({
+      border: `1px solid ${props.borderColor}`,
+      paddingRight: props.button ? `150px` : '',
+      color: props.color
+    }))
+
+    const onButtonClick = () => {
+      if (emailRegex.test(email.value) && check.value) {
+        erro.value = false
+        addEmail(email.value)
+      } else {
+        erro.value = true
+      }
     }
-  },
-  methods: {
-    onButtonClick() {
-      console.log('Input Value 1:')
+
+    const addEmail = (email) => {
+      console.log('tiago' + email)
+    }
+
+    return {
+      email,
+      check,
+      erro,
+      style,
+      input,
+      onButtonClick
     }
   }
 }
@@ -111,7 +127,6 @@ export default {
   width: 100%;
   max-width: 400px;
   border: none;
-  background-color: inherit;
   margin: 1.5rem auto;
 }
 .input-button {
@@ -125,10 +140,10 @@ export default {
 .input-label {
   position: absolute;
   left: 10px;
-  background-color: inherit;
   top: -11px;
   font-size: 14px;
   padding: 0px 2px;
+  background-color: #e5212a;
   color: #fff;
 }
 
@@ -160,14 +175,15 @@ input::placeholder {
 .privacy p {
   line-height: 1.2rem;
   max-width: 400px;
+  margin-left: 5px;
 }
+
 .switch {
   position: relative;
   display: inline-block;
   width: 30px;
   height: 17px;
   margin-top: 2px;
-  margin-right: 5px;
 }
 
 /* Hide default HTML checkbox */
@@ -203,11 +219,11 @@ input::placeholder {
 }
 
 input:checked + .slider {
-  background-color: #141b20;
+  background-color: #3f51b5;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #141b20;
+  box-shadow: 0 0 1px #3f51b5;
 }
 
 input:checked + .slider:before {
@@ -223,5 +239,15 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.erro {
+  background-color: #fff3cd; /* Soft yellow background */
+  padding: 0.5rem;
+  border: 1px solid #ffeeba; /* Light yellow border */
+  border-radius: 5px;
+  text-align: center;
+  max-width: 400px;
+  margin: 1rem auto;
 }
 </style>
