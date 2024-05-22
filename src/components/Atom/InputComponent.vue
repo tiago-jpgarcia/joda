@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div v-if="loading" class="loading">
+      <ImageComponent class="spinner" :source="JodaImage" />
+    </div>
     <div :style="style" class="input-container">
       <label v-if="text" class="input-label">{{ text }}</label>
       <input :style="input" :placeholder="placeholder" v-model="email" />
@@ -36,7 +39,7 @@
       <TextComponent
         class="subMessage"
         :textAlign="true"
-        color="#856404"
+        color="#FFF"
         :size="1.3"
         text="Obrigado, seu email foi guardado com sucesso."
       />
@@ -48,11 +51,14 @@
 import { ref, computed } from 'vue'
 import ButtonComponent from './ButtonComponent.vue'
 import TextComponent from './TextComponent.vue'
+import ImageComponent from './ImageComponent.vue'
+import JodaImage from '../../assets/joda_image.png'
 
 export default {
   components: {
     ButtonComponent,
-    TextComponent
+    TextComponent,
+    ImageComponent
   },
   props: {
     text: {
@@ -94,6 +100,7 @@ export default {
     const erro = ref(false)
     const sub = ref(false)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const loading = ref(false)
 
     const style = computed(() => ({
       backgroundColor: props.backgroundColor
@@ -116,6 +123,7 @@ export default {
     }
 
     const addEmail = async (email) => {
+      addLoading()
       try {
         const response = await fetch('https://joda-646f1b621967.herokuapp.com/subscribe', {
           method: 'POST',
@@ -125,17 +133,30 @@ export default {
           body: JSON.stringify({ email: email })
         })
         if (response.ok) {
+          removeLoading()
           email = ''
           erro.value = false
           sub.value = true
         } else {
+          removeLoading()
+          email = ''
           erro.value = true
           sub.value = false
         }
       } catch (error) {
+        removeLoading()
+        email = ''
         erro.value = true
         sub.value = false
       }
+    }
+
+    const addLoading = () => {
+      loading.value = true
+    }
+
+    const removeLoading = () => {
+      loading.value = false
     }
 
     return {
@@ -146,7 +167,11 @@ export default {
       style,
       input,
       onButtonClick,
-      addEmail
+      addEmail,
+      JodaImage,
+      loading,
+      removeLoading,
+      addLoading
     }
   }
 }
@@ -154,6 +179,36 @@ export default {
 
 <style>
 @import '../../assets/main.css';
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  width: 100px;
+}
+
+.spinner {
+  display: block;
+  width: 50px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotateY(0deg); /* Start vertical rotation from 0 degrees */
+    scale: 1;
+  }
+  100% {
+    transform: rotateY(360deg); /* End vertical rotation at 360 degrees */
+    scale: 2;
+  }
+}
+
+.spinner {
+  animation: spin 1.2s ease-out -1.2s infinite alternate forwards; /* Adjust animation duration or timing function as needed */
+}
+
 .input-container {
   position: relative;
   width: 100%;
@@ -207,7 +262,7 @@ input::placeholder {
 .privacy p {
   line-height: 1.2rem;
   max-width: 400px;
-  margin-left: 5px;
+  margin-left: 10px;
 }
 
 .switch {
@@ -259,9 +314,9 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(13px);
-  -ms-transform: translateX(13px);
-  transform: translateX(13px);
+  -webkit-transform: translateX(10px);
+  -ms-transform: translateX(10px);
+  transform: translateX(10px);
 }
 
 /* Rounded sliders */
