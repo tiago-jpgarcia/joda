@@ -117,7 +117,7 @@ export default {
 
     const addEmail = async (email) => {
       try {
-        const response = await fetch('https://joda.herokuapp.com/subscribe', {
+        const response = await fetch('https://joda-646f1b621967.herokuapp.com/subscribe', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
