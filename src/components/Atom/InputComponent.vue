@@ -181,7 +181,7 @@ export default {
 @import '../../assets/main.css';
 
 .loading {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   z-index: 1;
